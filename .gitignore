@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.angular/
+.env
+.env.*
+!.env.example
+
+coverage/
+.vscode/
+.idea/
+
+*.log
+
+uploads/
