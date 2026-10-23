@@ -51,4 +51,30 @@ const result= await query(
 );
 return result.rows[0];
 }
-module.exports = { findUserByemail, createUser }
+
+//verify current user state
+const verifyState =async(userId)=>{
+const result = await query(`SELECT
+        u.id AS user_id,
+        CONCAT(u.first_name, ' ', u.last_name) AS name,
+        u.email,
+        u.phone,
+        r.id AS role_id,
+        r.name AS role_name,
+        p.name AS permission_name
+    FROM users u
+    LEFT JOIN user_roles ur
+        ON u.id = ur.user_id
+    LEFT JOIN roles r
+        ON ur.role_id = r.id
+    LEFT JOIN role_permissions rp
+        ON r.id = rp.role_id
+    LEFT JOIN permissions p
+        ON rp.permission_id = p.id
+    WHERE u.id = $1
+    ORDER BY r.id, p.id;
+`, [userId]);
+return result.rows;
+}
+
+module.exports = { findUserByemail, createUser, verifyState };

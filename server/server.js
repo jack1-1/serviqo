@@ -6,7 +6,9 @@ const {checkDatabaseConnection} = require('./src/config/database');
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-
+const authroutes=require('./src/routes/auth.routes');
+const ticketroutes= require('./src/routes/ticket.routes');
+const dashroutes= require('./src/routes/dashboard.routes')
 // Security middleware
 app.use(helmet());
 
@@ -23,6 +25,9 @@ app.use(express.json());
 
 // Parse URL encoded data
 app.use(express.urlencoded({ extended: true }));
+app.use('/api/auth',authroutes);
+app.use('/api/tickets',ticketroutes);
+app.use('/api/dashboard',dashroutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -50,3 +55,4 @@ const startServer=async () => {
   }
 }
 startServer();
+
