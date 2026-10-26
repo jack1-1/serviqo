@@ -7,7 +7,7 @@ import { TokenService } from "./token.service";
 import { LoginRequest, LoginResponse, Authcontext } from "../models/auth-model";
 import { environment } from "../../../environments/environment";
 import { API_ENDPOINTS } from "../constants/api.constants";
-
+import { RegisterRequest, RegisterResponse } from "../models/register-model";
 @Injectable({
     providedIn: 'root'
 })
@@ -22,6 +22,13 @@ export class AuthService {
         return this.http.post<LoginResponse>(
             `${environment.url}${API_ENDPOINTS.AUTH.LOGIN}`,
             credentials
+        );
+    }
+    // register endpoint
+    register(payload: RegisterRequest): Observable<RegisterResponse> {
+        return this.http.post<RegisterResponse>(
+            `${environment.url}${API_ENDPOINTS.AUTH.REGISTER}`,
+            payload
         );
     }
     // /auth/me //

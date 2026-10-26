@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { Shell } from './core/layout/shell/shell';
+import { permissionGuard } from './core/guards/permission.guard';
+import { PERMISSIONS } from './core/constants/permissions';
 export const routes: Routes = [
     {
         path: '',
@@ -23,9 +25,7 @@ export const routes: Routes = [
     // },
     {
         path: '',
-
         component: Shell,
-
         canActivate: [authGuard],
 
         children: [
@@ -34,19 +34,27 @@ export const routes: Routes = [
                 path: 'dashboard',
                 loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard)
             },
-            // {
-            //     path: 'tickets',
+            {
+                path: 'tickets/create',
+                loadComponent: () =>
+                    import('./features/tickets/create-ticket/create-ticket')
+                        .then(m => m.CreateTicket),
+                canActivate: [permissionGuard],
+                data: {
+                    permission: PERMISSIONS.CREATE_TICKET
+                }
+            },
+            {
+                path: 'tickets/list',
+                loadComponent: () =>
+                    import('./features/tickets/view-tickets/view-tickets')
+                        .then(m => m.ViewTickets),
 
-            //     loadComponent: () =>
-            //         import('./features/tickets/tickets.component')
-            //             .then(m => m.TicketsComponent),
-
-            //     canActivate: [permissionGuard],
-
-            //     data: {
-            //         permission: PERMISSIONS.TICKET_VIEW
-            //     }
-            // }
+                canActivate: [permissionGuard],
+                data: {
+                    permission: PERMISSIONS.VIEW_TICKET
+                }
+            }
         ]
     },
     {

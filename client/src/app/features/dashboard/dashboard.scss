@@ -1,0 +1,164 @@
+
+.dashboard-container {
+  background-color: #f7f8fc;
+  min-height: 100%;
+}
+
+.dashboard-title {
+  font-weight: 700;
+  color: #202938;
+}
+
+.summary-card,
+.recent-tickets-card {
+  border: 1px solid #e8ebf2;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgb(25 35 55 / 4%);
+}
+
+.summary-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px rgb(25 35 55 / 8%);
+}
+
+.summary-label {
+  color: #667085;
+  font-size: 0.9rem;
+}
+
+.summary-value {
+  color: #202938;
+  font-size: 1.9rem;
+  font-weight: 700;
+}
+
+.summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 58px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #edf3ff;
+  color: #315fba;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.recent-tickets-card {
+  overflow: hidden;
+}
+
+.recent-tickets-card .card-header {
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid #e8ebf2;
+}
+
+.table th {
+  background-color: #f8f9fc;
+  color: #667085;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table td {
+  color: #344054;
+  font-size: 0.88rem;
+}
+
+.ticket-number {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ticket-title {
+  min-width: 180px;
+  max-width: 300px;
+}
+
+.ticket-badge {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-open {
+  background: #e8f1ff;
+  color: #2458a6;
+}
+
+.status-progress {
+  background: #fff0d6;
+  color: #925b00;
+}
+
+.status-waiting {
+  background: #f0eaff;
+  color: #6842a5;
+}
+
+.status-resolved {
+  background: #e2f7eb;
+  color: #18794e;
+}
+
+.status-closed {
+  background: #edf0f3;
+  color: #475467;
+}
+
+.status-reopened {
+  background: #ffe8e8;
+  color: #b42318;
+}
+
+.status-default {
+  background: #f2f4f7;
+  color: #475467;
+}
+
+.priority-low {
+  background: #edf7ed;
+  color: #357a38;
+}
+
+.priority-medium {
+  background: #fff5d6;
+  color: #8a6700;
+}
+
+.priority-high {
+  background: #ffeadb;
+  color: #b54708;
+}
+
+.priority-critical {
+  background: #fee4e2;
+  color: #b42318;
+}
+
+.priority-default {
+  background: #f2f4f7;
+  color: #475467;
+}
+
+.dashboard-message,
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.empty-state h6 {
+  font-weight: 600;
+}

@@ -64,7 +64,7 @@ const createTicket = async (req, res, next) => {
             data: ticket
         });
     } catch (error) {
-
+        next(error)
     }
 }
 

@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { generateToken } = require('../utils/jwt');
 
 const userRepository = require('../repositories/user.repository');
-
+const emailService = require('../services/email-service')
 //register/signup //
 const registerUser = async ({
     firstName,
@@ -23,6 +23,17 @@ const registerUser = async ({
         hashPassword,
         phone
     });
+    if(user){
+         try {
+        await emailService.sendRegistrationEmail({
+            firstName,
+            email
+        });
+    } catch (error) {
+        // Do not undo successful registration because SMTP is unavailable.
+        console.error('Registration email failed:', error.message);
+    }
+    }
     return user;
 }
 

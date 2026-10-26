@@ -90,6 +90,8 @@ export class LoginComponent {
       {
         next: (authContext) => {
           this._authStateService.setAuthContext(authContext);
+          console.log('reached dash route');
+          
           this.router.navigate(['/dashboard']);
         },
 

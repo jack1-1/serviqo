@@ -56,10 +56,10 @@ const ALLOWED_FILTERS = [
 
 function validateTicketSearch(req, res, next) {
   const {
-    page = 1,
-    limit = 10,
-    dateRange = 'all',
-    search = '',
+    page,
+    limit,
+    dateRange,
+    search 
   } = req.body; // need to change later
 
   const errors = [];

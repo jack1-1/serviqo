@@ -1,30 +1,63 @@
-<aside class="sidebar">
 
+<aside class="sidebar">
   <mat-nav-list>
 
-    @for (item of navigationItems; track item.route) {
-
+    @for (item of navigationItems; track item.label) {
       @if (hasPermission(item.permission)) {
 
-        <a
-          mat-list-item
-          [routerLink]="item.route"
-          routerLinkActive="active">
+        @if (item.children?.length) {
+          <mat-expansion-panel
+            class="sidebar-expansion"
+            [expanded]="item.children.some(child => child.route === '/tickets/create' || child.route === '/tickets')">
 
-          <mat-icon matListItemIcon>
-            {{ item.icon }}
-          </mat-icon>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="sidebar-icon">
+                  {{ item.icon }}
+                </mat-icon>
+                <span>{{ item.label }}</span>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
-          <span matListItemTitle>
-            {{ item.label }}
-          </span>
+            <mat-nav-list class="sidebar-child-list">
+              @for (child of item.children; track child.route) {
+                @if (hasPermission(child.permission)) {
+                  <a
+                    mat-list-item
+                    [routerLink]="child.route"
+                    routerLinkActive="active">
 
-        </a>
+                    <mat-icon matListItemIcon>
+                      {{ child.icon }}
+                    </mat-icon>
+
+                    <span matListItemTitle>
+                      {{ child.label }}
+                    </span>
+                  </a>
+                }
+              }
+            </mat-nav-list>
+
+          </mat-expansion-panel>
+        } @else {
+          <a
+            mat-list-item
+            [routerLink]="item.route"
+            routerLinkActive="active">
+
+            <mat-icon matListItemIcon>
+              {{ item.icon }}
+            </mat-icon>
+
+            <span matListItemTitle>
+              {{ item.label }}
+            </span>
+          </a>
+        }
 
       }
-
     }
 
   </mat-nav-list>
-
 </aside>

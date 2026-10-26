@@ -1,0 +1,39 @@
+
+.search-tickets-container {
+  .filter-card,
+  .results-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .search-button {
+    min-height: 48px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .ticket-number {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .ticket-title {
+    min-width: 180px;
+    max-width: 320px;
+  }
+
+  .empty-state mat-icon {
+    font-size: 42px;
+    width: 42px;
+    height: 42px;
+    color: #9aa0a6;
+  }
+
+  .card-footer {
+    flex-wrap: wrap;
+  }
+}

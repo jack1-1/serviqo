@@ -1,0 +1,232 @@
+
+<div class="container-fluid py-4 search-tickets-container">
+
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+      <h2 class="mb-1">Search Tickets</h2>
+      <p class="text-muted mb-0">
+        Find and filter tickets available to you.
+      </p>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="resetFilters()"
+      [disabled]="isLoading()">
+      <mat-icon>refresh</mat-icon>
+      Reset
+    </button>
+  </div>
+
+  <section class="card filter-card mb-4">
+    <div class="card-body p-4">
+
+      <form [formGroup]="filterForm" (ngSubmit)="searchTickets(1)">
+
+        <div class="row g-3">
+
+          <div class="col-12 col-lg-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Search ticket</mat-label>
+              <input
+                matInput
+                formControlName="search"
+                placeholder="Ticket number or title">
+              <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Date range</mat-label>
+              <mat-select formControlName="dateRange">
+                @for (range of dateRanges; track range.value) {
+                  <mat-option [value]="range.value">
+                    {{ range.label }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-3">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Category</mat-label>
+              <mat-select formControlName="categoryIds" multiple>
+                @for (category of categories(); track category.id) {
+                  <mat-option [value]="category.id">
+                    {{ category.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Priority</mat-label>
+              <mat-select formControlName="priorityIds" multiple>
+                @for (priority of priorities(); track priority.id) {
+                  <mat-option [value]="priority.id">
+                    {{ priority.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="statusIds" multiple>
+                @for (status of statuses(); track status.id) {
+                  <mat-option [value]="status.id">
+                    {{ status.name }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-lg-4 d-flex align-items-start">
+            <button
+              mat-flat-button
+              color="primary"
+              type="submit"
+              class="search-button"
+              [disabled]="isLoading() || isLoadingLookups()">
+
+              @if (isLoading()) {
+                <mat-spinner diameter="18"></mat-spinner>
+                <span>Searching...</span>
+              } @else {
+                <mat-icon>search</mat-icon>
+                <span>Search</span>
+              }
+            </button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  @if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">
+      {{ errorMessage() }}
+
+      @if (isLoadingLookups()) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-danger ms-2"
+          (click)="loadLookups()">
+          Retry
+        </button>
+      }
+    </div>
+  }
+
+  <section class="card results-card">
+
+    <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center gap-2 py-3">
+      <div>
+        <h5 class="mb-1">Ticket Results</h5>
+        <small class="text-muted">
+          {{ pagination().totalRecords }} ticket(s) found
+        </small>
+      </div>
+
+      <span class="badge text-bg-light">
+        Page {{ pagination().page }} of {{ pagination().totalPages || 1 }}
+      </span>
+    </div>
+
+    <div class="card-body p-0">
+
+      @if (isLoading() && tickets().length === 0) {
+        <div class="text-center py-5">
+          <mat-spinner diameter="36" class="mx-auto"></mat-spinner>
+          <p class="text-muted mt-3 mb-0">Loading tickets...</p>
+        </div>
+      } @else if (tickets().length === 0 && !isLoading()) {
+        <div class="empty-state text-center py-5">
+          <mat-icon>inbox</mat-icon>
+          <h6 class="mt-2">No tickets found</h6>
+          <p class="text-muted mb-0">
+            Try changing your filters or resetting them.
+          </p>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Ticket #</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (ticket of tickets(); track trackTicket($index, ticket)) {
+                <tr>
+                  <td class="ticket-number">
+                    {{ ticket.ticket_number }}
+                  </td>
+                  <td class="ticket-title">
+                    {{ ticket.title }}
+                  </td>
+                  <td>
+                    {{ lookupName(ticket.category_id, categories()) }}
+                  </td>
+                  <td>
+                    {{ lookupName(ticket.priority_id, priorities()) }}
+                  </td>
+                  <td>
+                    {{ lookupName(ticket.status_id, statuses()) }}
+                  </td>
+                  <td>
+                    {{ ticket.created_at | date: 'dd MMM yyyy' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+    </div>
+
+    <div class="card-footer bg-white d-flex justify-content-between align-items-center gap-2">
+      <small class="text-muted">
+        Showing {{ tickets().length }} of {{ pagination().totalRecords }}
+      </small>
+
+      <div class="d-flex gap-2">
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="previousPage()"
+          [disabled]="isLoading() || pagination().page <= 1">
+          <mat-icon>chevron_left</mat-icon>
+          Previous
+        </button>
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="nextPage()"
+          [disabled]="isLoading() || pagination().page >= pagination().totalPages">
+          Next
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+
+  </section>
+</div>
