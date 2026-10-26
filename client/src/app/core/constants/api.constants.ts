@@ -14,6 +14,8 @@ export const API_ENDPOINTS={
         PRIORITIES: '/tickets/priorities',
         STATUSES: '/tickets/statuses',
         CREATE: '/tickets/create-ticket',
-        SEARCH: '/tickets/search'
-  }
+        SEARCH: '/tickets/search',
+        AI_SUGGESTIONS: '/tickets/ai-suggestions',
+  },
+  
 } as const;

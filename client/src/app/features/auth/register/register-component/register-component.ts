@@ -98,10 +98,14 @@ export class RegisterComponent {
     this.successMessage.set('');
 
     if (this.registerForm.invalid || this.isSubmitting()) {
+      console.log(this.registerForm.errors);
+      
       return;
     }
 
     const formValue = this.registerForm.getRawValue();
+    console.log(formValue);
+    
 
     const payload: RegisterRequest = {
       firstName: formValue.firstName.trim(),

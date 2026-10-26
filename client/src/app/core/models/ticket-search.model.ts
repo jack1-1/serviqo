@@ -51,3 +51,4 @@ export interface TicketSearchResponse {
   message: string;
   data: TicketSearchResult;
 }
+

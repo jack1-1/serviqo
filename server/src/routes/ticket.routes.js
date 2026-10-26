@@ -1,5 +1,6 @@
 const express = require('express');
 const ticketController = require('../controllers/ticket.controller');
+const aiController = require('../controllers/ai.controller')
 const authMiddleware = require('../middlewares/auth.middleware');
 const { requirePermission } = require('../middlewares/permission.middleware');
 const {validateCreateTicket}= require('../validators/ticket.validators');
@@ -24,6 +25,23 @@ router.get(
     requirePermission('VIEW_TICKET'),
     ticketController.getStatuses
 );
+//AI-suggestions
+
+router.post(
+    '/ai-suggestions',
+    authMiddleware,
+    requirePermission('CREATE_TICKET'),
+    aiController.generateTicketSuggestions
+);
+
+
+router.post(
+    '/ai-suggestions',
+    authMiddleware,
+    requirePermission('CREATE_TICKET'),
+    aiController.generateTicketSuggestions
+);
+
 
 // create ticket //
 router.post(

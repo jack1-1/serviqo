@@ -6,9 +6,10 @@ import { environment } from '../../../environments/environment';
 import { API_ENDPOINTS } from '../constants/api.constants';
 import { DashboardResponse } from '../models/dashboard.model';
 import { TicketLookup, CreateTicketRequest, CreateTicketResponse, TicketLookupResponse } from '../models/ticket-lookup.model';
-import {TicketSearchRequest,TicketSearchResponse} from '../models/ticket-search.model';
+import { TicketSearchRequest, TicketSearchResponse } from '../models/ticket-search.model';
+import { TicketAISuggestionsRequest, TicketAISuggestionsResponse } from '../models/ticket-ai.model';
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class TicketService {
   private readonly http = inject(HttpClient);
@@ -40,9 +41,16 @@ export class TicketService {
     );
   }
 
-  searchTickets(payload: TicketSearchRequest):Observable<TicketSearchResponse>{
+  searchTickets(payload: TicketSearchRequest): Observable<TicketSearchResponse> {
     return this.http.post<TicketSearchResponse>(
       `${this.baseUrl}${API_ENDPOINTS.TICKETS.SEARCH}`,
       payload)
+  }
+
+  getTicketSuggestions(payload: TicketAISuggestionsRequest): Observable<TicketAISuggestionsResponse> {
+    return this.http.post<TicketAISuggestionsResponse>(
+      `${this.baseUrl}${API_ENDPOINTS.TICKETS.AI_SUGGESTIONS}`,
+      payload
+    );
   }
 }
